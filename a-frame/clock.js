@@ -8,10 +8,16 @@ AFRAME.registerComponent("clock", {
     this.titleEl.setAttribute("position", { x: 1, y: 0, z: 0 });
     this.titleEl.setAttribute("color", "#00ff00");
     this.titleEl.setAttribute("font", "sourcecodepro");
-    this.titleEl.setAttribute("value", "Hello, world!");
+    this.titleEl.setAttribute("value", "Current time "+displayTime(now));
 
     this.el.appendChild(this.titleEl);
+    this.titleE2 = document.createElement("a-text");
+    this.titleE2.setAttribute("position", { x: 1, y: 0, z: 5 });
+    this.titleE2.setAttribute("color", "#00ff00");
+    this.titleE2.setAttribute("font", "sourcecodepro");
+    this.titleE2.setAttribute("value", "Current time2 "+displayTime(convertTimeZone(now, "London")));
 
+    this.el.appendChild(this.titleE2);
 
     //TODO: Use helper functions in timezone.js to display the current time and support converting time zones
     //For implementing interactivity, you may find .addEventListener() useful
