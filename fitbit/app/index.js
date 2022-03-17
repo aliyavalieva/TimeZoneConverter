@@ -3,16 +3,36 @@ import * as document from "document";
 
 //Get the clock element defined in resources/index.view and set its text
 const clock = document.getElementById("clock");
-clock.text = "Hello, world!";
+const myButtonMain = document.getElementById("button");
+const myButton = document.getElementById("button-1");
+const myButton2 = document.getElementById("button-2");
+
+myButtonMain.addEventListener("click", (evt) => {
+	getCurrentLocalTime();
+  console.log("CLICKED");
+})
+
+myButton.addEventListener("click", (evt) => {
+	convertTimeZone(new Date().toString(), 'London');
+  console.log("CLICKED");
+})
+
+myButton2.addEventListener("click", (evt) => {
+	convertTimeZone(new Date().toString(), 'New York');
+	console.log("CLICKED2");
+  })
+
 
 messaging.peerSocket.addEventListener("open", (evt) => {
   console.log("Ready to send or receive messages");
 
   //Get the current local time and some arbitrary times in different time zones
-  //You can send a dictionary with any primitives (strings, numbers, booleans) and have the companion return in in the response message
+  //You can send a dictionary with any primitives (strings, numbers, booleans) 
+  //and have the companion return in in the response message
   getCurrentLocalTime();
   convertTimeZone(new Date().toString(), 'London');
-  convertTimeZone("2:42pm", 'Hawaii', {'sentCustomTime':true});
+  convertTimeZone(new Date().toString(), 'New York');
+  //convertTimeZone("2:42pm", 'Hawaii', {'sentCustomTime':true});
 });
 
 // Send a command to the companion
@@ -27,6 +47,7 @@ function getCurrentLocalTime(dataToSend = {}) {
 	dataToSend.command = "currentLocalTime";
 	sendMessage(dataToSend);
 }
+ 
 
 //Helper function to ask the companion to convert a time string and a time zone string
 function convertTimeZone(time, timeZoneString, dataToSend={}) {
@@ -38,11 +59,16 @@ function convertTimeZone(time, timeZoneString, dataToSend={}) {
 
 //Process the local time response
 function processLocalTime(localTime) {
+	// clock.text=button press
+	clock.text = "Today is: " + localTime.response;
 	console.log('It is currently ' + localTime.response + ' locally');
-	//TODO: display the local time. You may want to do so in a different part of the code, or may be able to modify this method
+
+	//TODO: display the local time. You may want to do so in a different part of the code, 
+	//or may be able to modify this method
 }
 
 function processConvertedTime(convertedTime) {
+	clock.text = "Today is: " + convertedTime.response;
 	if(convertedTime.sentCustomTime) {
 		console.log(convertedTime.time + ' in local time is ' + convertedTime.response + ' in ' + convertedTime.timeZoneString);
 	} else {

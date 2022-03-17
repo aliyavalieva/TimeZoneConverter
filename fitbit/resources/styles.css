@@ -9,3 +9,16 @@
   height: 100%;
   fill: white;
 }
+.application-fill           { fill: fb-mint; }
+.foreground-fill            { fill: fb-white; }
+.background-fill            { fill: fb-black; }
+
+#button-1 #text {
+  text-buffer: "London";
+}
+#button-2 #text {
+  text-buffer: "New York";
+}
+#button #text {
+  text-buffer: "Local Time";
+}
