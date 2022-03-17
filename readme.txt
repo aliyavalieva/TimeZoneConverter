@@ -1,4 +1,5 @@
 --Readme document for *author(s)*, *email(s)*, *UCI id(s)*--
+Asad Ellis, asade@uci.edu, 25214489
 
 1. How many assignment points do you believe you completed (replace the *'s with your numbers)?
 
@@ -25,6 +26,8 @@ None, other than my group member
 5. Is there anything special we need to know in order to run your code?
 For A-Frame to activate the button you need to press a few pixels to the left of "D" in "Display"
 
+We are also unsure if we implemented the Alexa one correctly. It was very confusing but it does display the times in other time zones. 
+We are unsure if this is a built in function, so if it is we did not know that. The documentation for it was not very straight forward.
 
 6. Did you implement any extra credit options? If so, which ones?
 We implemented all three of the frameworks
