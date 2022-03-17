@@ -1,3 +1,19 @@
+/**
+ * Copyright 2020 Amazon.com, Inc. and its affiliates. All Rights Reserved.
+ * SPDX-License-Identifier: LicenseRef-.amazon.com.-AmznSL-1.0
+ *
+ * Licensed under the Amazon Software License (the "License").
+ * You may not use this file except in compliance with the License.
+ * A copy of the License is located at
+ *
+ * http://aws.amazon.com/asl/
+ *
+ * or in the "license" file accompanying this file. This file is distributed
+ * on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
+ * express or implied. See the License for the specific language governing
+ * permissions and limitations under the License.
+ **/
+
 //Starter code for IN4MATX 133, Assignment 5, Alexa framework
 
 const Alexa = require("ask-sdk-core");
@@ -9,13 +25,43 @@ const LookupCityTimeApiHandler = {
   canHandle(handlerInput) {
     return util.isApiRequest(handlerInput, "LookupCityTime");
   },
+  
+  
   async handle(handlerInput) {
+     
     //Timezone code source: https://developer.amazon.com/en-US/blogs/alexa/alexa-skills-kit/2019/07/getting-started-with-cake-time-using-the-alexa-settings-api-to-look-up-the-device-time-zone
     // TODO get timezone of the device
-
+    // getting the current date with the time
+    const serviceClientFactory = handlerInput.serviceClientFactory;
+    const deviceId = handlerInput.requestEnvelope.context.System.device.deviceId;
+    
+    let userTimeZone;
+    try {
+        const upsServiceClient = serviceClientFactory.getUpsServiceClient();
+        userTimeZone = await upsServiceClient.getSystemTimeZone(deviceId);
+    } catch (error) {
+        if (error.name !== 'ServiceError') {
+            return handlerInput.responseBuilder.speak("There was a problem connecting to the service.").getResponse();
+        }
+        console.log('error', error.message);
+    }
+    console.log('userTimeZone', userTimeZone);
+    const currentDateTime = new Date(new Date().toLocaleString("en-US", {timeZone: userTimeZone}));
+    
+    const args = util.getApiArguments(handlerInput);
+    const cityy = args.city;
+    const timee = args.time;
+    // Store the city time in the session
+    const sessionAttributes = handlerInput.attributesManager.getSessionAttributes();
+    sessionAttributes.city = cityy;
+    sessionAttributes.time = timee;
+   
+  
     let response = {
       apiResponse: {
         // TODO
+        t:timee,
+        c:cityy
       },
     };
     return response;
@@ -28,11 +74,36 @@ const LookupTimeNowApiHandler = {
   },
   async handle(handlerInput) {
     //Timezone code source: https://developer.amazon.com/en-US/blogs/alexa/alexa-skills-kit/2019/07/getting-started-with-cake-time-using-the-alexa-settings-api-to-look-up-the-device-time-zone
+    const serviceClientFactory = handlerInput.serviceClientFactory;
+    const deviceId = handlerInput.requestEnvelope.context.System.device.deviceId;
+    
+    let userTimeZone;
+    try {
+        const upsServiceClient = serviceClientFactory.getUpsServiceClient();
+         userTimeZone = "America/Los_Angeles";
 
+    } catch (error) {
+        if (error.name !== 'ServiceError') {
+            return handlerInput.responseBuilder.speak("There was a problem connecting to the service.").getResponse();
+        }
+        console.log('error', error.message);
+    }
+    console.log('userTimeZone', userTimeZone);
+    const currentDateTime = spacetime.now(userTimeZone);
+    
+    const args = util.getApiArguments(handlerInput);
+    const cityy = args.city;
+    const timee = args.time;
+    // Store the city time in the session
+    const sessionAttributes = handlerInput.attributesManager.getSessionAttributes();
+    sessionAttributes.city = cityy;
+    sessionAttributes.time = timee;
+    
+    
     // TODO get timezone of the device dynamically
-    let userTimeZone = "America/Los_Angeles";
+    // let userTimeZone = "America/Los_Angeles";
 
-    console.log("userTimeZone is " + userTimeZone);
+    // console.log("userTimeZone is " + userTimeZone);
 
     console.log(
       "Api Request [LookupCityTime]: ",
@@ -40,14 +111,14 @@ const LookupTimeNowApiHandler = {
     );
 
     //get the current time
-    let now = spacetime.now(userTimeZone);
+    // let now = spacetime.now(userTimeZone);
 
-    console.log("Api  [LookupTimeNow] time now: ", now.time());
+    //console.log("Api  [LookupTimeNow] time now: ", now.time());
 
     let response = {
       apiResponse: {
         // TODO
-        time: "",
+        time: timee
       },
     };
     console.log(
