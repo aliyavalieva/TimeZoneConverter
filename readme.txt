@@ -23,7 +23,7 @@ None, other than my group member
 
 
 5. Is there anything special we need to know in order to run your code?
-nope
+For A-Frame to activate the button you need to press a few pixels to the left of "D" in "Display"
 
 
 6. Did you implement any extra credit options? If so, which ones?
