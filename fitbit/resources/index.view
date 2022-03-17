@@ -1,4 +1,9 @@
-<svg viewport-fill="#8b2e5f">
+<svg viewport-fill="red">
   <text id="clock" x="50%" y="50%+15"
       fill="white" text-anchor="middle" text-length="20">00:00:00</text>
+  
+ <use id="button-1" href="#text-button" class="text-button bottom left secondary application-fill" />
+<use id="button-2" href="#text-button" class="text-button bottom right application-fill" />
+<use id="button" href="#text-button" class="text-button middle application-fill" />
+
 </svg>
